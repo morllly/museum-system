@@ -23,8 +23,12 @@ docker-compose up -d nginx mysql
 ```
 docker-compose exec workspace bash
 ```
-Установите `composer` и `npm`.
+Установите `composer`.
 ```
 composer install
+```
+Установите `npm`.
+```
 npm install
+npm run dev
 ```
