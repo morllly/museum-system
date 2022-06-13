@@ -1,0 +1,67 @@
+ИНСТРУКЦИЯ
+1) В корне проекта выполнить
+	##добавить папку laradock##
+	git submodule add https://github.com/LaraDock/laradock.git laradock
+
+2) зайти в папку laradock
+назовите в .env
+COMPOSE_PROJECT_NAME=museum-system
+
+убедитесь docker-compose.yml:
+PHP_VERSION=8.0
+
+3) запустить контейнеры
+	docker-compose up -d nginx mysql phpmyadmin
+4) войти в контейнер рабочей области:
+	docker exec -it laradock-workspace-1 bash
+	docker-compose exec workspace bash
+5) выпонить
+	##добавить папку vendor##
+	composer install (в случае если не сработает, то composer install --no-plugins)
+    ##добавить папку node_modules##
+    npm install
+
+
+------------------------------------------
+
+Использование phpMyAdmin#
+Запустите phpMyAdmin Container (phpmyadmin) с docker-compose up с помощью команды.
+docker-compose up -d mysql phpmyadmin
+
+Откройте браузер и посетите localhost на порту 8081: http://localhost:8081, use server: “mysql”, user: “root” и password: “root для настройки mysql по умолчанию.
+
+------------------------------------------
+
+
+https://blog.nojaf.com/2016/08/19/laradock-on-windows-10/
+
+Подключение авторизации: https://laravel.su/docs/8.x/starter-kits
+
+
+С Powershell:
+Откройте Powershell от имени администратора
+Команда запуска: & 'C:\Program Files\Docker\Docker\DockerCli.exe' -SwitchDaemon
+
+ИЛИ с помощью cmd:
+Откройте cmd от имени администратора
+Команда запуска: "C:\Program Files\Docker\Docker\DockerCli.exe" -SwitchDaemon
+
+
+
+-------------------------------------------
+ОШИБКА
+UnexpectedValueException
+The stream or file "/var/www/storage/logs/laravel.log" could not be opened in append mode: failed to open stream: Permission denied
+
+РЕШЕНИЕ ПРОБЛЕМЫ:
+Вошла в контейнер рабочей области:   docker exec -it laradock-workspace-1 bash
+или docker-compose exec workspace bash
+Добавила в storage/logs файл laravel.log,
+
+ПОТОМ СТАЛА ОШИБКА
+UnexpectedValueException
+The stream or file "/var/www/storage/logs/laravel.log" could not be opened in append mode: failed to open stream: Permission denied
+
+затем команда:
+chmod -Rf 0777 storage
+-------------------------------------------
