@@ -10,7 +10,7 @@ class Exhibit extends Model
     protected $fillable = [
         "inventory_number",
         "title",
-        "keyword",
+        "keyword_id",
         "collection_id",
         "creator",
         "receipt_date",
@@ -31,5 +31,10 @@ class Exhibit extends Model
     public function collection()
     {
         return $this->belongsTo(MuseumCollection::class);
+    }
+
+    public function keyword()
+    {
+        return $this->belongsTo(Keyword::class);
     }
 }

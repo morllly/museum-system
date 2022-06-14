@@ -8,6 +8,7 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{asset('assets/css/tailwind.output.css')}}"/>
     <link rel="stylesheet" href="{{ asset('assets/css/Chart.min.css') }}"/>
+    @livewireStyles
 </head>
 <body>
 <div
@@ -30,10 +31,12 @@
 
 <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 <script src="{{ asset("js/app.js") }}" defer></script>
+<script src="{{ asset("assets/js/focus-trap.js") }}"></script>
 <script src="{{ asset("assets/js/alpine.min.js") }}" defer></script>
 <script src="{{ asset("assets/js/Chart.min.js") }}" defer></script>
 <script src="{{ asset("assets/js/init-alpine.js") }}"></script>
 <script src="{{ asset("assets/js/charts-lines.js") }}" defer></script>
 <script src="{{ asset("assets/js/charts-pie.js") }}" defer></script>
+@livewireScripts
 </body>
 </html>

@@ -5,14 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class MuseumCollection extends Model
+class Keyword extends Model
 {
-    protected $table = "collections";
-
     protected $fillable = [
         "title",
-        "designation",
-        "description"
     ];
 
     public function exhibits()

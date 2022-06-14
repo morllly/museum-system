@@ -17,7 +17,7 @@ class CreateExhibitsTable extends Migration
             $table->id();
             $table->string('inventory_number');
             $table->string('title');
-            $table->string('keyword');
+            $table->foreignId('keyword_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('collection_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->string('creator');
             $table->date('receipt_date');
