@@ -12,8 +12,6 @@
                 <span class="ml-2 pl-4" aria-hidden="true">+</span>
             </button>
         </form>
-
-        Выделено экспонатов: <strong></strong>
     </div>
 
     <div class="flex">
@@ -63,6 +61,12 @@
     </div>
 
 </div>
+
+@if($countSelected != null)
+    <p class="text-xs -mt-3 mb-3 text-gray-600 dark:text-gray-400">
+        Выделено экспонатов: <strong>{{ $countSelected }}</strong>
+    </p>
+@endif
 
 <!-- Таблица -->
 <div class="w-full overflow-hidden rounded-lg shadow-xs">
@@ -233,6 +237,7 @@
 
     <div class="mr-4">
         <button
+            wire:click.prevent="export"
             class="flex items-center justify-between px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
             <span>Экспорт</span>

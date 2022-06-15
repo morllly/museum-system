@@ -6,6 +6,9 @@ use App\Models\Exhibit;
 use App\Models\MuseumCollection;
 use App\Models\Keyword;
 
+use App\Exports\ExhibitsExport;
+use Maatwebsite\Excel\Facades\Excel;
+
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -26,6 +29,7 @@ class ExhibitIndex extends Component
 
     public $selectRow = [];
     public $selectAllRows = false;
+    public $countSelected = null;
 
     public function getExhibitsProperty(){
 
@@ -57,15 +61,20 @@ class ExhibitIndex extends Component
         $this->reset();
     }
 
-    public function confirmDeletion($id){
+    public function show($id){
 
-        $this->confirmDeletion = $id;
+        $this->showInfo = true;
+
+        $collections = MuseumCollection::all();
+        $keywords = Keyword::all();
+
+        $this->exhibitInfo = Exhibit::with('collection')->with('keyword')->findOrFail($id);
 
     }
 
-    public function confirmDeletionSelected(){
+    public function confirmDeletion($id){
 
-        $this->confirmDeletionSelected = true;
+        $this->confirmDeletion = $id;
 
     }
 
@@ -74,6 +83,12 @@ class ExhibitIndex extends Component
         Exhibit::find($id)->delete();
 
         $this->confirmDeletion = false;
+
+    }
+
+    public function confirmDeletionSelected(){
+
+        $this->confirmDeletionSelected = true;
 
     }
 
@@ -88,17 +103,6 @@ class ExhibitIndex extends Component
 
     }
 
-    public function show($id){
-
-        $this->showInfo = true;
-
-        $collections = MuseumCollection::all();
-        $keywords = Keyword::all();
-
-        $this->exhibitInfo = Exhibit::with('collection')->with('keyword')->findOrFail($id);
-
-    }
-
     public function updatedSelectAllRows($value){
 
         if($value){
@@ -106,6 +110,8 @@ class ExhibitIndex extends Component
         }else{
             $this->selectRow = [];
         };
+
+        $this->countSelected = count($this->selectRow);
     }
 
     public function updatedSelectRow($value){
@@ -117,6 +123,14 @@ class ExhibitIndex extends Component
         }else{
             $this->selectAllRows = false;
         }
+
+        $this->countSelected = count($this->selectRow);
+    }
+
+    public function export(){
+
+        return (new ExhibitsExport($this->selectRow))->download('Экспонаты.xls');
+
     }
 
 }
