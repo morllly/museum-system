@@ -1,4 +1,66 @@
 <div>
+
+<div class="flex justify-between mb-8 mt-3">
+
+    <!-- Кнопка Добавить -->
+    <form action="{{ route('admin.exhibits.create') }}" class="pr-6">
+        <button
+                class="flex h-full items-center justify-between px-4 py-2 text-sm font-medium leading-5 bg-transparent text-purple-600 border border-purple-600 rounded-lg transition-colors duration-150 active:bg-purple-800 hover:bg-purple-700 hover:text-white focus:outline-none focus:shadow-outline-purple"
+        >
+            Добавить
+            <span class="ml-2 pl-4" aria-hidden="true">+</span>
+        </button>
+    </form>
+
+    <div class="flex">
+
+        <!-- Фильтр Коллекция -->
+        <select
+            wire:model="filterCollection"
+            id="dropdownCollection"
+            class="block mr-4 pl-6 pr-8 py-2 w-auto text-sm text-gray-500  dark:text-gray-300 bg-gray-50 rounded-lg border border-purple-300 focus:ring-purple-500 focus:border-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-purple-500 dark:focus:border-purple-500">
+
+            <option value="" default>Коллекция</option>
+            @foreach ($collections as $collection)
+            <ul class="py-1 text-sm" aria-labelledby="dropdownCollection">
+                <option class="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                    value="{{ $collection->id }}">{{ $collection->title }}
+                </option>
+            </ul>
+            @endforeach
+        </select>
+
+        <!-- Фильтр Ключевое слово -->
+        <select
+            wire:model="filterKeyword"
+            id="dropdownKeyword"
+            class="block mr-4 pl-6 pr-9 p-2 w-auto text-sm border-purple-300 text-gray-500 dark:text-gray-300 bg-gray-50 rounded-lg border  focus:ring-purple-500 focus:border-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-purple-500 dark:focus:border-purple-500">
+
+            <option value="" default>Ключевое слово</option>
+            @foreach ($keywords as $keyword)
+                    <option class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                        value="{{ $keyword->id }}">{{ $keyword->title }}
+                    </option>
+            @endforeach
+        </select>
+
+        <!-- Поиск -->
+        <form class="flex items-center">
+            <div class="relative w-full">
+                <div class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+                    <svg class="w-5 h-5 text-purple-500 dark:text-purple-700" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
+                </div>
+                <input
+                    wire:model="search" value=""
+                    type="text" id="simple-search" class="bg-gray-50 border border-purple-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Поиск...">
+            </div>
+        </form>
+
+    </div>
+
+</div>
+
+<!-- Таблица -->
 <div class="w-full overflow-hidden rounded-lg shadow-xs">
     <div class="w-full overflow-x-auto">
         <table class="w-full whitespace-no-wrap">
@@ -6,11 +68,12 @@
                 <tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
                     <th class="px-4 py-3">
                         <div class="flex items-center text-sm">
-                            <label class="flex items-center dark:text-gray-400">
+                            <label
+                                class="flex items-center dark:text-gray-400">
                               <input
-                                type="checkbox"
-                                class="text-purple-600 form-checkbox focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
-                              />
+                                    type="checkbox"
+                                    class="text-purple-600 form-checkbox focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
+                                />
                               </span>
                             </label>
                         </div>
@@ -110,6 +173,7 @@
             </tbody>
         </table>
 
+        <!-- Пагинация -->
         {{ $exhibits->links('livewire.pagination-links') }}
 
         <!-- Подтверждение удаления -->
@@ -123,11 +187,7 @@
             @include('components.modal-show')
         @endif
 
-
     </div>
 </div>
-
-
-
 
 </div>

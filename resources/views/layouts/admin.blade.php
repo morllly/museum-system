@@ -21,9 +21,9 @@
     <!-- Mobile sidebar -->
     @include('includes.mobile-sidebar')
 
-    <div class="flex flex-col flex-1 w-full">
+    <div class="flex flex-col flex-1 w-full ">
         @include('includes.header')
-        <main class="h-full overflow-y-auto">
+        <main class="h-full overflow-y-auto bg-gray-50 dark:bg-gray-900"">
             @yield('content')
         </main>
     </div>
