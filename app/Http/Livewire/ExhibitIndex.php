@@ -14,6 +14,7 @@ class ExhibitIndex extends Component
     use WithPagination;
 
     public $confirmDeletion = false;
+    public $confirmDeletionSelected = false;
     public $showInfo = false;
 
     public $exhibitInfo = null;
@@ -23,22 +24,29 @@ class ExhibitIndex extends Component
     public $filterCollection = null;
     public $filterKeyword = null;
 
-    public function render()
-    {
+    public $selectRow = [];
+    public $selectAllRows = false;
+
+    public function getExhibitsProperty(){
+
+        return Exhibit::orderBy('inventory_number','ASC')
+                        ->with('collection')
+                        ->with('keyword')
+                        ->when($this->filterCollection, function($query){
+                            return $query->where('collection_id', $this->filterCollection);
+                        })
+                        ->when($this->filterKeyword, function($query){
+                            return $query->where('keyword_id', $this->filterKeyword);
+                        })
+                        ->whereLike(['inventory_number', 'title'], $this->search);
+    }
+
+    public function render(){
+
         $collections = MuseumCollection::all();
         $keywords = Keyword::all();
 
-        $exhibits = Exhibit::orderBy('inventory_number','ASC')
-                            ->with('collection')
-                            ->with('keyword')
-                            ->when($this->filterCollection, function($query){
-                                return $query->where('collection_id', $this->filterCollection);
-                            })
-                            ->when($this->filterKeyword, function($query){
-                                return $query->where('keyword_id', $this->filterKeyword);
-                            })
-                            ->whereLike(['inventory_number', 'title'], $this->search)
-                            ->paginate(3);
+        $exhibits = $this->exhibits->paginate(4);
 
         return view('livewire.exhibit-index', compact('exhibits'))
                                             ->with('collections', $collections)
@@ -55,11 +63,28 @@ class ExhibitIndex extends Component
 
     }
 
+    public function confirmDeletionSelected(){
+
+        $this->confirmDeletionSelected = true;
+
+    }
+
     public function delete($id){
 
-        $del = Exhibit::find($id)->delete();
+        Exhibit::find($id)->delete();
 
         $this->confirmDeletion = false;
+
+    }
+
+    public function deleteSelected(){
+
+        Exhibit::whereIn('id', $this->selectRow)->delete();
+
+        $this->selectRow = [];
+        $this->selectAllRows = false;
+
+        $this->confirmDeletionSelected = false;
 
     }
 
@@ -72,6 +97,26 @@ class ExhibitIndex extends Component
 
         $this->exhibitInfo = Exhibit::with('collection')->with('keyword')->findOrFail($id);
 
+    }
+
+    public function updatedSelectAllRows($value){
+
+        if($value){
+            $this->selectRow = $this->exhibits->pluck('id');
+        }else{
+            $this->selectRow = [];
+        };
+    }
+
+    public function updatedSelectRow($value){
+
+        $sum = $this->exhibits->count();
+
+        if(count($value) == $sum) {
+            $this->selectAllRows = true;
+        }else{
+            $this->selectAllRows = false;
+        }
     }
 
 }

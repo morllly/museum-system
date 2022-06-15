@@ -307,8 +307,8 @@
                         </li>
                     </ul>
                 </template>
-            </li>
-        </ul>-->
+            </li>-->
+        </ul>
 
         <div class="px-6 my-6">
             <a href="{{ route('admin.exhibits.create') }}"

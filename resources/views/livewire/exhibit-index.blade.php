@@ -2,15 +2,19 @@
 
 <div class="flex justify-between mb-8 mt-3">
 
+    <div class="flex">
     <!-- Кнопка Добавить -->
-    <form action="{{ route('admin.exhibits.create') }}" class="pr-6">
-        <button
-                class="flex h-full items-center justify-between px-4 py-2 text-sm font-medium leading-5 bg-transparent text-purple-600 border border-purple-600 rounded-lg transition-colors duration-150 active:bg-purple-800 hover:bg-purple-700 hover:text-white focus:outline-none focus:shadow-outline-purple"
-        >
-            Добавить
-            <span class="ml-2 pl-4" aria-hidden="true">+</span>
-        </button>
-    </form>
+        <form action="{{ route('admin.exhibits.create') }}" class="pr-6">
+            <button
+                    class="flex h-full items-center justify-between px-4 py-2 text-sm font-medium leading-5 bg-transparent text-purple-600 border border-purple-600 rounded-lg transition-colors duration-150 active:bg-purple-800 hover:bg-purple-700 hover:text-white focus:outline-none focus:shadow-outline-purple"
+            >
+                Добавить
+                <span class="ml-2 pl-4" aria-hidden="true">+</span>
+            </button>
+        </form>
+
+        Выделено экспонатов: <strong></strong>
+    </div>
 
     <div class="flex">
 
@@ -71,6 +75,7 @@
                             <label
                                 class="flex items-center dark:text-gray-400">
                               <input
+                                    wire:model="selectAllRows"
                                     type="checkbox"
                                     class="text-purple-600 form-checkbox focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
                                 />
@@ -92,11 +97,14 @@
 
                         <td class="px-4 py-3">
                             <div class="flex items-center text-sm">
-                                <label class="flex items-center dark:text-gray-400">
-                                  <input
-                                    type="checkbox"
-                                    class="text-purple-600 form-checkbox focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
-                                  />
+                                <label for="{{ $exhibit->id }}" class="flex items-center dark:text-gray-400">
+                                    <input
+                                        wire:model="selectRow"
+                                        value="{{ $exhibit->id }}"
+                                        id="{{ $exhibit->id }}"
+                                        type="checkbox"
+                                        class="text-purple-600 form-checkbox focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
+                                    />
                                   </span>
                                 </label>
                             </div>
@@ -173,20 +181,62 @@
             </tbody>
         </table>
 
+        <!-- Массовое удаление -->
+        @if($selectRow != [])
+            <div
+            class="px-3.5 py-3 border-t dark:border-gray-700 bg-gray-50 sm:grid-cols-9 dark:text-gray-400 dark:bg-gray-800">
+            <button
+                    wire:click="confirmDeletionSelected"
+                    class="flex items-center justify-betweentext-sm font-medium leading-5 text-purple-600 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-gray transition-colors hover:text-purple-800 dark:hover:text-gray-200"
+                    aria-label="Delete" style="cursor: pointer">
+                    <svg class="w-5 h-5" aria-hidden="true" fill="currentColor"
+                        viewBox="0 0 20 20">
+                        <path fill-rule="evenodd"
+                            d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                </button>
+            </div>
+        @else
+            <div style="transition: 0.3s"></div>
+        @endif
+
         <!-- Пагинация -->
         {{ $exhibits->links('livewire.pagination-links') }}
+
+        <!-- Подтверждение массового удаления -->
+        @if($confirmDeletionSelected)
+            @include('components.modal-deleteSelected')
+        @endif
 
         <!-- Подтверждение удаления -->
         @if($confirmDeletion)
             @include('components.modal-delete')
         @endif
 
-
         <!-- Вывод информации -->
         @if($showInfo)
             @include('components.modal-show')
         @endif
 
+    </div>
+</div>
+
+<div class="flex mt-10">
+    <div class="mr-5">
+        <button
+            class="flex items-center justify-between px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+            <span>Импорт</span>
+        </button>
+    </div>
+
+    <div class="mr-4">
+        <button
+            class="flex items-center justify-between px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
+            <span>Экспорт</span>
+        </button>
     </div>
 </div>
 
