@@ -22,12 +22,6 @@ class Exhibit extends Model
         "image"
     ];
 
-    public static $KEYWORDS = [
-        'Кухонная утварь' => 'Кухонная утварь',
-        'Предмет быта'    => 'Предмет быта',
-        'Прочие'          => 'Прочие',
-    ];
-
     public function collection()
     {
         return $this->belongsTo(MuseumCollection::class);

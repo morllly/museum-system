@@ -10,9 +10,9 @@
         404
     </h1>
     <p class="text-gray-700 dark:text-gray-300">
-        Page not found. Check the address or
-        <a class="text-purple-600 hover:underline dark:text-purple-300" href="../index.blade.php">
-            go back
+        Страница не найдена. Проверьте адрес или
+        <a class="text-purple-600 hover:underline dark:text-purple-300" href="{{ url()->previous() }}">
+            вернитесь назад
         </a>
         .
     </p>

@@ -22,6 +22,8 @@ class ExhibitIndex extends Component
 
     public $exhibitInfo = null;
 
+    public $displayedRecords = 10;
+
     public $search = "";
 
     public $filterCollection = null;
@@ -60,7 +62,7 @@ class ExhibitIndex extends Component
         $collections = MuseumCollection::all();
         $keywords = Keyword::all();
 
-        $exhibits = $this->exhibits->paginate(4);
+        $exhibits = $this->exhibits->paginate($this->displayedRecords);
 
         return view('livewire.exhibit-index', compact('exhibits'))
                                             ->with('collections', $collections)

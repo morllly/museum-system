@@ -17,17 +17,15 @@
         <select
             wire:model="displayedRecords"
             id="displayed records"
-            class="block mr-4 pl-6 pr-8 py-2 w-auto text-sm text-gray-500  dark:text-gray-300 bg-gray-50 rounded-lg border border-purple-300 focus:ring-purple-500 focus:border-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-purple-500 dark:focus:border-purple-500">
-
-            <option value="" default>Коллекция</option>
+            class="block mr-4 pl-2 pr-8 py-2 w-auto text-sm text-gray-500  dark:text-gray-300 bg-gray-50 rounded-lg border border-purple-300 focus:ring-purple-500 focus:border-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-purple-500 dark:focus:border-purple-500">
             <ul class="py-1 text-sm" aria-labelledby="displayed records">
-                <option class="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                <option class="hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                     value="10">10
                 </option>
-                <option class="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                    value="20">20
+                <option class="hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                    value="25">25
                 </option>
-                <option class="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                <option class="hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                     value="50">50
                 </option>
             </ul>

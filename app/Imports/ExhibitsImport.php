@@ -42,14 +42,14 @@ class ExhibitsImport implements ToCollection, WithValidation
     public function rules(): array
     {
         return[
-            0  => "required|unique:exhibits,inventory_number",
-            1  => "required",
-            2  => "required",
+            0  => "required|max:255|unique:exhibits,inventory_number",
+            1  => "required|max:255|unique:exhibits,title",
+            2  => "required|exists:keywords,title",
             3  => "required|exists:collections,title",
             4  => "required|date",
             5  => "required",
-            6  => "required",
-            7  => "required",
+            6  => "required|max:255",
+            7  => "required|max:255",
             8  => "required",
             9  => "required",
             10 => "required",
