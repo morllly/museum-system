@@ -31,8 +31,8 @@ class ExhibitIndex extends Component
     public $selectAllRows = false;
     public $countSelected = null;
 
-    public function getExhibitsProperty(){
-
+    public function getExhibitsProperty()
+    {
         return Exhibit::orderBy('inventory_number','ASC')
                         ->with('collection')
                         ->with('keyword')
@@ -42,11 +42,21 @@ class ExhibitIndex extends Component
                         ->when($this->filterKeyword, function($query){
                             return $query->where('keyword_id', $this->filterKeyword);
                         })
-                        ->whereLike(['inventory_number', 'title'], $this->search);
+                        ->whereLike([
+                                    'inventory_number',
+                                    'title',
+                                    'creator',
+                                    'receipt_date',
+                                    'entry_method',
+                                    'creation_time',
+                                    'characteristics',
+                                    'description',
+                                    'safety',
+                                ], $this->search);
     }
 
-    public function render(){
-
+    public function render()
+    {
         $collections = MuseumCollection::all();
         $keywords = Keyword::all();
 
@@ -57,54 +67,50 @@ class ExhibitIndex extends Component
                                             ->with('keywords', $keywords);
     }
 
-    public function close(){
+    public function close()
+    {
         $this->reset();
     }
 
-    public function show($id){
-
+    public function show($id)
+    {
         $this->showInfo = true;
 
         $collections = MuseumCollection::all();
         $keywords = Keyword::all();
 
         $this->exhibitInfo = Exhibit::with('collection')->with('keyword')->findOrFail($id);
-
     }
 
-    public function confirmDeletion($id){
-
+    public function confirmDeletion($id)
+    {
         $this->confirmDeletion = $id;
-
     }
 
-    public function delete($id){
-
+    public function delete($id)
+    {
         Exhibit::find($id)->delete();
 
         $this->confirmDeletion = false;
-
     }
 
-    public function confirmDeletionSelected(){
-
+    public function confirmDeletionSelected()
+    {
         $this->confirmDeletionSelected = true;
-
     }
 
-    public function deleteSelected(){
-
+    public function deleteSelected()
+    {
         Exhibit::whereIn('id', $this->selectRow)->delete();
 
         $this->selectRow = [];
         $this->selectAllRows = false;
 
         $this->confirmDeletionSelected = false;
-
     }
 
-    public function updatedSelectAllRows($value){
-
+    public function updatedSelectAllRows($value)
+    {
         if($value){
             $this->selectRow = $this->exhibits->pluck('id');
         }else{
@@ -114,8 +120,8 @@ class ExhibitIndex extends Component
         $this->countSelected = count($this->selectRow);
     }
 
-    public function updatedSelectRow($value){
-
+    public function updatedSelectRow($value)
+    {
         $sum = $this->exhibits->count();
 
         if(count($value) == $sum) {
@@ -127,10 +133,9 @@ class ExhibitIndex extends Component
         $this->countSelected = count($this->selectRow);
     }
 
-    public function export(){
-
+    public function export()
+    {
         return (new ExhibitsExport($this->selectRow))->download('Экспонаты.xls');
-
     }
 
 }

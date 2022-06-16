@@ -7,6 +7,9 @@ use App\Models\MuseumCollection;
 use App\Models\Keyword;
 use Illuminate\Http\Request;
 
+use App\Imports\ExhibitsImport;
+use Maatwebsite\Excel\Facades\Excel;
+
 class ExhibitController extends Controller
 {
     /**
@@ -39,7 +42,6 @@ class ExhibitController extends Controller
      */
     public function store(Request $request)
     {
-
         if($request->has('image')){
             $image = str_replace("public/images/", "", $request->file('image')->store('public/images'));
         };
@@ -62,17 +64,6 @@ class ExhibitController extends Controller
         $exhibit->save();
 
         return redirect('dashboard/exhibits')->with('success','Данные успешно добавлены!');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Exhibit  $exhibit
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Exhibit $exhibit)
-    {
-        //
     }
 
     /**
@@ -123,14 +114,10 @@ class ExhibitController extends Controller
         return redirect('dashboard/exhibits')->with('success','Данные успешно добавлены!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Exhibit  $exhibit
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Exhibit $exhibit)
+    public function import(Request $request)
     {
-        //
+        Excel::import(new ExhibitsImport, $request->file('exhibit_file'));
+
+        return back();
     }
 }

@@ -3,7 +3,7 @@
 <div class="flex justify-between mb-8 mt-3">
 
     <div class="flex">
-    <!-- Кнопка Добавить -->
+        <!-- Кнопка Добавить -->
         <form action="{{ route('admin.exhibits.create') }}" class="pr-6">
             <button
                     class="flex h-full items-center justify-between px-4 py-2 text-sm font-medium leading-5 bg-transparent text-purple-600 border border-purple-600 rounded-lg transition-colors duration-150 active:bg-purple-800 hover:bg-purple-700 hover:text-white focus:outline-none focus:shadow-outline-purple"
@@ -12,6 +12,26 @@
                 <span class="ml-2 pl-4" aria-hidden="true">+</span>
             </button>
         </form>
+
+        <!-- Фильтр Количество выведенных записей -->
+        <select
+            wire:model="displayedRecords"
+            id="displayed records"
+            class="block mr-4 pl-6 pr-8 py-2 w-auto text-sm text-gray-500  dark:text-gray-300 bg-gray-50 rounded-lg border border-purple-300 focus:ring-purple-500 focus:border-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-purple-500 dark:focus:border-purple-500">
+
+            <option value="" default>Коллекция</option>
+            <ul class="py-1 text-sm" aria-labelledby="displayed records">
+                <option class="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                    value="10">10
+                </option>
+                <option class="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                    value="20">20
+                </option>
+                <option class="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                    value="50">50
+                </option>
+            </ul>
+        </select>
     </div>
 
     <div class="flex">
@@ -69,7 +89,7 @@
 @endif
 
 <!-- Таблица -->
-<div class="w-full overflow-hidden rounded-lg shadow-xs">
+<div class="w-full overflow-hidden rounded-lg shadow-xs mb-10">
     <div class="w-full overflow-x-auto">
         <table class="w-full whitespace-no-wrap">
             <thead>
@@ -208,17 +228,17 @@
         <!-- Пагинация -->
         {{ $exhibits->links('livewire.pagination-links') }}
 
-        <!-- Подтверждение массового удаления -->
+        <!-- Модальное окно Подтверждение массового удаления -->
         @if($confirmDeletionSelected)
             @include('components.modal-deleteSelected')
         @endif
 
-        <!-- Подтверждение удаления -->
+        <!-- Модальное окно Подтверждение удаления -->
         @if($confirmDeletion)
             @include('components.modal-delete')
         @endif
 
-        <!-- Вывод информации -->
+        <!-- Модальное окно Вывод информации -->
         @if($showInfo)
             @include('components.modal-show')
         @endif
@@ -226,23 +246,47 @@
     </div>
 </div>
 
-<div class="flex mt-10">
-    <div class="mr-5">
-        <button
-            class="flex items-center justify-between px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
-            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-            <span>Импорт</span>
-        </button>
-    </div>
+<!-- Вывод ошибок при импорте -->
+@if($errors->any())
+    <div id="toast-default" class="w-full max-w-xl p-4 mb-6 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800" role="alert">
+        <div class="flex mb-3">
+            <div class="flex text-sm text-red-500 dark:text-red-700">
+                <svg class="inline flex-shrink-0 mr-3 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+                <div>
+                  <span class="text-gray-500 dark:text-gray-400">Внимательно проверьте загружаемый файл:</span>
+                </div>
+            </div>
+            <button
+                wire:click="close"
+                type="button" class="ml-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700" data-collapse-toggle="toast-default" aria-label="Close">
+                <span class="sr-only">Close</span>
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+            </button>
+        </div>
 
+        <ol class="text-xs ml-8 text-gray-600 dark:text-gray-400">
+                @foreach ($errors->all() as $error)
+                    <li>• {{ $error }}</li>
+                @endforeach
+        </ol>
+    </div>
+@endif
+
+<div class="flex mb-12">
+
+    <!-- Кнопка Экспорт -->
     <div class="mr-4">
         <button
             wire:click.prevent="export"
-            class="flex items-center justify-between px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
+            class="flex items-center justify-between px-4 py-2.5 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path></svg>
             <span>Экспорт</span>
         </button>
     </div>
+
+    <!-- Кнопка Импорт -->
+    @include("admin.exhibits.import")
+
 </div>
 
 </div>

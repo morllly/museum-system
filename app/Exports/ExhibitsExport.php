@@ -56,6 +56,10 @@ class ExhibitsExport implements FromQuery, WithMapping, WithHeadings
 
     public function query()
     {
-        return Exhibit::with('collection:id,title')->with('keyword:id,title')->whereIn('id', $this->selectRow);
+        if($this->selectRow == []){
+            return Exhibit::with('collection:id,title')->with('keyword:id,title');
+        }else{
+            return Exhibit::with('collection:id,title')->with('keyword:id,title')->whereIn('id', $this->selectRow);
+        };
     }
 }

@@ -32,6 +32,7 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'dashboard', 'as' => 'admin.
     Route::view('/tables', 'admin.tables')->name('tables');
 
     Route::resource('/exhibits', ExhibitController::class);
+    Route::post('/exhibits/import', [App\Http\Controllers\ExhibitController::class, 'import']);
 
     Route::group(['prefix' => 'pages', 'as' => 'page.'], function () {
         Route::view('/404-page', 'admin.pages.404')->name('404');
