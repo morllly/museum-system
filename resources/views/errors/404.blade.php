@@ -12,9 +12,7 @@
     <p class="text-gray-700 dark:text-gray-300">
         Страница не найдена. Проверьте адрес или
         <a class="text-purple-600 hover:underline dark:text-purple-300" href="{{ url()->previous() }}">
-            вернитесь назад
-        </a>
-        .
+            вернитесь назад</a>.
     </p>
 </div>
 @endsection

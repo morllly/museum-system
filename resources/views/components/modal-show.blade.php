@@ -1,8 +1,8 @@
 <div
     wire:model='exhibitInfo'
-    class="fixed inset-0 z-30 flex items-end bg-black bg-opacity-30 sm:items-center sm:justify-center">
+    class="fixed inset-0 z-30 flex items-end bg-black bg-opacity-50 sm:items-center sm:justify-center">
 
-    <div class="w-full px-5 py-5 overflow-hidden bg-white rounded-t-lg dark:bg-gray-800 sm:rounded-lg sm:m-4 sm:max-w-xl" role="dialog" id="modal">
+    <div class="w-full px-5 py-5 overflow-hidden bg-gray-50 rounded-t-lg dark:bg-gray-800 sm:rounded-lg sm:m-4 sm:max-w-xl" role="dialog" id="modal">
 
         <header class="flex justify-end z-50">
             <button
@@ -14,38 +14,38 @@
             </button>
         </header>
 
-        <div class="flex flex-col xl:flex-row w-full -mt-5 bg-white rounded-lg overflow-hidden dark:bg-gray-800">
+        <div class="flex flex-col xl:flex-row w-full -mt-5 bg-gray-50 rounded-lg overflow-hidden dark:bg-gray-800">
 
             <div class="relative p-4">
                 <p class="font-semibold mb-1 text-gray-800 dark:text-gray-200">
                     {{ $exhibitInfo->title }} - {{ $exhibitInfo->inventory_number }}
                 </p>
 
-                <p class="text-sm mb-3 text-gray-600 dark:text-gray-400">
+                <p class="text-sm mb-3 text-gray-600 dark:text-gray-300">
                     {{ $exhibitInfo->keyword->title }}
                 </p>
 
-                <p class="text-xs mb-1 text-gray-600 dark:text-gray-400">
+                <p class="text-xs mb-1 text-gray-600 dark:text-gray-300">
                     <strong>Коллекция: </strong>{{ $exhibitInfo->collection->title }}
                 </p>
 
-                <p class="text-xs mb-1 text-gray-600 dark:text-gray-400">
+                <p class="text-xs mb-1 text-gray-600 dark:text-gray-300">
                     <strong>Дата и способ поступления: </strong>{{ $exhibitInfo->receipt_date }}. {{ $exhibitInfo->entry_method }}
                 </p>
 
-                <p class="text-xs mb-1 text-gray-600 dark:text-gray-400">
+                <p class="text-xs mb-1 text-gray-600 dark:text-gray-300">
                     <strong>Автор, изготовитель: </strong>{{ $exhibitInfo->creator }}
                 </p>
 
-                <p class="text-xs mb-1 text-gray-600 dark:text-gray-400">
+                <p class="text-xs mb-1 text-gray-600 dark:text-gray-300">
                     <strong>Характеристики: </strong>{{ $exhibitInfo->characteristics }}
                 </p>
 
-                <p class="text-xs mb-1 text-gray-600 dark:text-gray-400">
+                <p class="text-xs mb-1 text-gray-600 dark:text-gray-300">
                     <strong>Описание: </strong>{{ $exhibitInfo->description }}
                 </p>
 
-                <p class="text-xs mb-1 text-gray-600 dark:text-gray-400">
+                <p class="text-xs mb-1 text-gray-600 dark:text-gray-300">
                     <strong>Сохранность: </strong>{{ $exhibitInfo->safety }}
                 </p>
 

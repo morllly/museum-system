@@ -94,6 +94,8 @@ class ExhibitIndex extends Component
         Exhibit::find($id)->delete();
 
         $this->confirmDeletion = false;
+
+        session()->flash('success', 'Данные успешно удалены!');
     }
 
     public function confirmDeletionSelected()
@@ -109,6 +111,8 @@ class ExhibitIndex extends Component
         $this->selectAllRows = false;
 
         $this->confirmDeletionSelected = false;
+
+        session()->flash('success', 'Данные успешно удалены!');
     }
 
     public function updatedSelectAllRows($value)

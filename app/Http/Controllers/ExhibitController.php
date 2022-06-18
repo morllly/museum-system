@@ -32,6 +32,7 @@ class ExhibitController extends Controller
     {
         $collections = MuseumCollection::all();
         $keywords = Keyword::all();
+
         return view('admin.exhibits.createAndEdit')->with('collections', $collections)->with('keywords', $keywords);
     }
 
@@ -83,15 +84,15 @@ class ExhibitController extends Controller
             $exhibit->image = str_replace("public/images/", "", $request->file('image')->store('public/images'));
         };
 
-        $exhibit->update($request->validate());
+        $exhibit->update($request->validated());
 
-        return redirect('dashboard/exhibits')->with('success','Данные успешно добавлены!');
+        return redirect('dashboard/exhibits')->with('success','Данные успешно отредактированы!');
     }
 
     public function import(Request $request)
     {
         Excel::import(new ExhibitsImport, $request->file('exhibit_file'));
 
-        return back();
+        return back()->with('success','Данные успешно загружены!');
     }
 }

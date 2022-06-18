@@ -1,13 +1,64 @@
 <div>
 
+<!-- Вывод ошибок при импорте -->
+@if($errors->any())
+    <div id="alert_error" class="w-full p-4 my-6 bg-red-100 dark:bg-red-200 rounded-lg">
+        <div class="flex mb-2.5">
+            <div class="flex text-red-700 dark:text-red-800">
+                <svg class="inline flex-shrink-0 mr-3 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+                <div class="-mt-0.5">
+                    <span class="text-sm font-medium">Внимательно проверьте загружаемый файл:</span>
+                </div>
+            </div>
+            <button id="close_alert_error"
+                wire:click="close"
+                type="button" class="ml-auto -mx-1.5 -my-1.5 duration-200 bg-red-100 hover:bg-red-200 text-red-500 rounded-lg focus:ring-2 p-1.5  inline-flex h-8 w-8 dark:bg-red-200 dark:text-red-600 dark:hover:bg-red-300" data-collapse-toggle="toast-default" aria-label="Close">
+                <span class="sr-only">Close</span>
+                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+            </button>
+        </div>
+
+        <ol class="text-xs ml-8 text-red-700 dark:text-red-800">
+                @foreach ($errors->all() as $error)
+                    <li>• {{ $error }}</li>
+                @endforeach
+        </ol>
+    </div>
+
+    <script>
+        document.getElementById('close_alert_error').onclick = function() {
+            document.getElementById('alert_error').style.display = 'none';
+        }
+    </script>
+@endif
+
+<!-- Уведомление при успешной операции -->
+@if(session()->get('success'))
+    <div id="alert_success" class="flex p-4 mb-4 bg-green-100 rounded-lg dark:bg-green-200" role="alert">
+        <svg class="flex-shrink-0 w-5 h-5 text-green-700 dark:text-green-800" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+            <div class="ml-3 text-sm font-medium text-green-700 dark:text-green-800">
+                {{ session()->get('success') }}
+            </div>
+        <button id="close_alert_success" type="button" class="ml-auto -mx-1.5 -my-1.5 bg-green-100 text-green-500 rounded-lg focus:ring-2 focus:ring-green-400 p-1.5 hover:bg-green-200 inline-flex h-8 w-8 dark:bg-green-200 dark:text-green-600 dark:hover:bg-green-300" data-dismiss-target="#alert-3" aria-label="Close">
+            <span class="sr-only">Close</span>
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+        </button>
+    </div>
+
+    <script>
+        document.getElementById('close_alert_success').onclick = function() {
+            document.getElementById('alert_success').style.display = 'none';
+        }
+    </script>
+@endif
+
 <div class="flex justify-between mb-8 mt-3">
 
     <div class="flex">
         <!-- Кнопка Добавить -->
         <form action="{{ route('admin.exhibits.create') }}" class="pr-6">
             <button
-                    class="flex h-full items-center justify-between px-4 py-2 text-sm font-medium leading-5 bg-transparent text-purple-600 border border-purple-600 rounded-lg transition-colors duration-150 active:bg-purple-800 hover:bg-purple-700 hover:text-white focus:outline-none focus:shadow-outline-purple"
-            >
+                    class="flex h-full items-center justify-between px-4 py-2 text-sm font-medium leading-5 bg-transparent text-purple-600 border border-purple-600 rounded-lg transition-colors duration-150 active:bg-purple-800 hover:bg-purple-700 hover:text-white focus:outline-none focus:shadow-outline-purple">
                 Добавить
                 <span class="ml-2 pl-4" aria-hidden="true">+</span>
             </button>
@@ -38,15 +89,15 @@
         <select
             wire:model="filterCollection"
             id="dropdownCollection"
-            class="block mr-4 pl-6 pr-8 py-2 w-auto text-sm text-gray-500  dark:text-gray-300 bg-gray-50 rounded-lg border border-purple-300 focus:ring-purple-500 focus:border-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-purple-500 dark:focus:border-purple-500">
+            class="block mr-4 pl-6 pr-8 py-2 w-auto text-sm text-gray-500 dark:text-gray-300 bg-gray-50 rounded-lg border border-purple-300 focus:ring-purple-500 focus:border-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-purple-500 dark:focus:border-purple-500">
 
             <option value="" default>Коллекция</option>
             @foreach ($collections as $collection)
-            <ul class="py-1 text-sm" aria-labelledby="dropdownCollection">
-                <option class="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                    value="{{ $collection->id }}">{{ $collection->title }}
-                </option>
-            </ul>
+                <ul class="py-1 text-sm" aria-labelledby="dropdownCollection">
+                    <option class="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                        value="{{ $collection->id }}">{{ $collection->title }}
+                    </option>
+                </ul>
             @endforeach
         </select>
 
@@ -54,13 +105,15 @@
         <select
             wire:model="filterKeyword"
             id="dropdownKeyword"
-            class="block mr-4 pl-6 pr-9 p-2 w-auto text-sm border-purple-300 text-gray-500 dark:text-gray-300 bg-gray-50 rounded-lg border  focus:ring-purple-500 focus:border-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-purple-500 dark:focus:border-purple-500">
+            class="block mr-4 pl-6 pr-9 py-2 w-auto text-sm border-purple-300 text-gray-500 dark:text-gray-300 bg-gray-50 rounded-lg border  focus:ring-purple-500 focus:border-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-purple-500 dark:focus:border-purple-500">
 
             <option value="" default>Ключевое слово</option>
             @foreach ($keywords as $keyword)
-                    <option class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                <ul class="py-1 text-sm" aria-labelledby="dropdownKeyword">
+                    <option class="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                         value="{{ $keyword->id }}">{{ $keyword->title }}
                     </option>
+                </ul>
             @endforeach
         </select>
 
@@ -91,7 +144,7 @@
     <div class="w-full overflow-x-auto">
         <table class="w-full whitespace-no-wrap">
             <thead>
-                <tr class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
+                <tr class="text-xs font-semibold tracking-wide text-left text-gray-400 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
                     <th class="px-4 py-3">
                         <div class="flex items-center text-sm">
                             <label
@@ -99,7 +152,7 @@
                               <input
                                     wire:model="selectAllRows"
                                     type="checkbox"
-                                    class="text-purple-600 form-checkbox focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
+                                    class="border-gray-300 text-purple-600 form-checkbox focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
                                 />
                               </span>
                             </label>
@@ -125,7 +178,7 @@
                                         value="{{ $exhibit->id }}"
                                         id="{{ $exhibit->id }}"
                                         type="checkbox"
-                                        class="text-purple-600 form-checkbox focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
+                                        class="border-gray-300 text-purple-600 form-checkbox dark:placeholder-gray-600 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:focus:shadow-outline-gray"
                                     />
                                   </span>
                                 </label>
@@ -139,7 +192,8 @@
                                 <div class="relative hidden w-8 h-8 mr-3 rounded-full md:block">
                                     <img class="object-cover w-full h-full rounded-full"
                                         src="{{ asset('storage/images/'.$exhibit->image) }}"
-                                        alt="" loading="lazy" />
+                                        onerror="this.src='../img/photo.jpg';"
+                                        loading="lazy" />
                                     <div class="absolute inset-0 rounded-full shadow-inner"
                                         aria-hidden="true"></div>
                                 </div>
@@ -244,33 +298,7 @@
     </div>
 </div>
 
-<!-- Вывод ошибок при импорте -->
-@if($errors->any())
-    <div id="toast-default" class="w-full max-w-xl p-4 mb-6 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800" role="alert">
-        <div class="flex mb-3">
-            <div class="flex text-sm text-red-500 dark:text-red-700">
-                <svg class="inline flex-shrink-0 mr-3 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
-                <div>
-                  <span class="text-gray-500 dark:text-gray-400">Внимательно проверьте загружаемый файл:</span>
-                </div>
-            </div>
-            <button
-                wire:click="close"
-                type="button" class="ml-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700" data-collapse-toggle="toast-default" aria-label="Close">
-                <span class="sr-only">Close</span>
-                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-            </button>
-        </div>
-
-        <ol class="text-xs ml-8 text-gray-600 dark:text-gray-400">
-                @foreach ($errors->all() as $error)
-                    <li>• {{ $error }}</li>
-                @endforeach
-        </ol>
-    </div>
-@endif
-
-<div class="flex mb-12">
+<div class="flex mb-12" id="export_import">
 
     <!-- Кнопка Экспорт -->
     <div class="mr-4">
@@ -283,8 +311,26 @@
     </div>
 
     <!-- Кнопка Импорт -->
-    @include("admin.exhibits.import")
+    <form action="exhibits/import" method="POST" enctype="multipart/form-data">
+        @csrf
+        <div class="relative flex">
+            <input
+                type="file"
+                accept=".xlsx,.xls,.csv"
+                class="border-purple-400 pr-4 focus:outline-none focus:shadow-outline-purple block w-full text-xs overflow-hidden cursor-pointer border text-gray-600 bg-gray-50 rounded-l-md focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400"
+                aria-describedby="view_model_avatar_help" id="view_model_avatar" name="exhibit_file"
+                required>
 
+            <div>
+                <button type="submit"
+                    class="flex items-center p-2.5 justify-between -ml-1 inset-y-0 px-4 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-r-md active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+                    </svg>
+                    <span>Импорт</span>
+                </button>
+            </div>
+        </div>
+    </form>
 </div>
 
 </div>

@@ -24,8 +24,8 @@ class ExhibitRequest extends FormRequest
     public function rules()
     {
         return [
-            "inventory_number"  => "required|max:255|unique:exhibits",
-            "title"             => "required|max:255|unique:exhibits",
+            "inventory_number"  => "required|max:255",
+            "title"             => "required|max:255",
             "keyword_id"        => "required",
             "collection_id"     => "required",
             "creator"           => "required|max:255",
