@@ -31,6 +31,7 @@ return [
         'password'              => 'Пароль',
         'password_confirmation' => 'Подтверждение пароля',
         'day'                   => 'День',
+        'today'                 => 'Сегодня',
         'month'                 => 'Месяц',
         'year'                  => 'Год',
         'hour'                  => 'Час',
@@ -53,7 +54,7 @@ return [
     'alpha_num'            => 'Значение поля :attribute может содержать только буквы и цифры.',
     'array'                => 'Значение поля :attribute должно быть массивом.',
     'before'               => 'Значение поля :attribute должно быть датой до :date.',
-    'before_or_equal'      => 'Значение поля :attribute должно быть датой до или равной :date.',
+    'before_or_equal'      => 'Значение поля :attribute должно быть не позднее сегодняшней даты',
     'between'              => [
         'array'   => 'Количество элементов в поле :attribute должно быть между :min и :max.',
         'file'    => 'Размер файла в поле :attribute должен быть между :min и :max Килобайт(а).',

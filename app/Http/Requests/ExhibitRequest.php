@@ -24,12 +24,12 @@ class ExhibitRequest extends FormRequest
     public function rules()
     {
         return [
-            "inventory_number"  => "required|max:255",
-            "title"             => "required|max:255",
+            "inventory_number"  => "required|max:50",
+            "title"             => "required|max:100",
             "keyword_id"        => "required",
             "collection_id"     => "required",
             "creator"           => "required|max:255",
-            "receipt_date"      => "required|date",
+            "receipt_date"      => "required|date|before_or_equal:today",
             "entry_method"      => "required",
             "creation_time"     => "required|max:255",
             "characteristics"   => "required",

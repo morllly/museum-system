@@ -35,7 +35,7 @@ class ExhibitIndex extends Component
 
     public function getExhibitsProperty()
     {
-        return Exhibit::orderBy('inventory_number','ASC')
+        return Exhibit::orderBy('id','ASC')
                         ->with('collection')
                         ->with('keyword')
                         ->when($this->filterCollection, function($query){
@@ -71,7 +71,9 @@ class ExhibitIndex extends Component
 
     public function close()
     {
-        $this->reset();
+        $this->confirmDeletion = false;
+        $this->confirmDeletionSelected = false;
+        $this->showInfo = false;
     }
 
     public function show($id)
@@ -109,6 +111,7 @@ class ExhibitIndex extends Component
 
         $this->selectRow = [];
         $this->selectAllRows = false;
+        $this->countSelected = null;
 
         $this->confirmDeletionSelected = false;
 

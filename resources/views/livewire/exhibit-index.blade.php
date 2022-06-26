@@ -317,7 +317,7 @@
             <input
                 type="file"
                 accept=".xlsx,.xls,.csv"
-                class="border-purple-400 pr-4 focus:outline-none focus:shadow-outline-purple block w-full text-xs overflow-hidden cursor-pointer border text-gray-600 bg-gray-50 rounded-l-md focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400"
+                class="border-purple-400 pr-4 focus:outline-none focus:shadow-outline-purple block w-full text-sm overflow-hidden cursor-pointer border text-gray-600 bg-gray-50 rounded-l-md focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400"
                 aria-describedby="view_model_avatar_help" id="view_model_avatar" name="exhibit_file"
                 required>
 

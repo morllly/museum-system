@@ -267,7 +267,8 @@
 
             @if(isset($exhibit) && $exhibit->image)
                 <div class="max-w-xs overflow-hidden rounded-lg mb-6">
-                    <img class="object-cover w-full h-60" src="{{ asset('storage/images/'.$exhibit->image) }}"/>
+                    <img class="object-cover w-full h-60"
+                        src="{{ asset('storage/images/'.$exhibit->image) }}"/>
                 </div>
             @endif
 
