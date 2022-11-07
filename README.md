@@ -32,3 +32,8 @@ composer install
 npm install
 npm run dev
 ```
+
+### Демонстрация работы программы
+
+https://user-images.githubusercontent.com/55758731/200274063-b6c47c8f-0780-472c-a414-217b5e300b8b.mp4
+
